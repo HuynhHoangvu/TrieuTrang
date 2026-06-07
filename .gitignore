@@ -23,4 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 .blackboxcli/
-public/hero_v.mp4
+public/hero-video-original.mp4
+
