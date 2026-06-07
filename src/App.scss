@@ -1,0 +1,9 @@
+/* Import global styling framework */
+@use './styles/variables' as *;
+@use './styles/global';
+
+.app-container {
+  overflow-x: hidden;
+  position: relative;
+  background-color: $color-sand-light;
+}

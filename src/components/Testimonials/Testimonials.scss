@@ -1,0 +1,138 @@
+@use '../../styles/variables' as *;
+
+.testimonials-section {
+  padding: $spacing-lg 0;
+  background-color: $color-sand-dark;
+  overflow: hidden;
+}
+
+.testimonials-slider-wrapper {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testimonials-slider {
+  position: relative;
+  min-height: 380px;
+
+  @media (min-width: 576px) {
+    min-height: 320px;
+  }
+}
+
+.testimonial-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(15px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  z-index: 1;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    z-index: 2;
+  }
+}
+
+.testimonial-card {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 4px;
+  box-shadow: $shadow-premium;
+  position: relative;
+
+  &::before {
+    content: '“';
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    font-family: $font-serif;
+    font-size: 8rem;
+    color: rgba(223, 182, 111, 0.12);
+    line-height: 1;
+  }
+}
+
+.rating-stars {
+  display: flex;
+  gap: 0.2rem;
+  color: $color-gold;
+  margin-bottom: 1.5rem;
+
+  .material-icons {
+    font-size: 1.3rem;
+  }
+}
+
+.testimonial-text {
+  font-family: $font-serif;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: $color-dark;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-user {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $color-gold;
+}
+
+.user-name {
+  font-family: $font-sans;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $color-dark;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  color: $color-gray;
+}
+
+.testimonial-date {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  font-size: 0.75rem;
+  color: $color-gray;
+  letter-spacing: 0.05em;
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(18, 18, 18, 0.15);
+  cursor: pointer;
+  transition: all $transition-normal;
+
+  &:hover, &.active {
+    background-color: $color-gold;
+    transform: scale(1.2);
+  }
+}
