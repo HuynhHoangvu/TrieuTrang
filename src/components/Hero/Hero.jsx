@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import './Hero.scss';
 
 export default function Hero({ onBooking }) {
@@ -6,10 +7,49 @@ export default function Hero({ onBooking }) {
   
   const titleText = "Bàu Cát Trắng";
   const words = titleText.split(" ");
-  let charCount = 0;
 
   const handleVideoLoad = () => {
     setVideoLoaded(true);
+  };
+
+  // Framer Motion variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+      }
+    }
+  };
+
+  const tagVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 100, damping: 15 } 
+    }
+  };
+
+  const charVariants = {
+    hidden: { opacity: 0, y: 30, rotateX: -90 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      rotateX: 0, 
+      transition: { type: 'spring', stiffness: 120, damping: 12 }
+    }
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 80, damping: 15 } 
+    }
   };
 
   return (
@@ -41,51 +81,84 @@ export default function Hero({ onBooking }) {
         </div>
       </div>
       
-      <div className="hero-content">
-        <span className="hero-tag">THIÊN ĐƯỜNG SA MẠC MŨI NÉ</span>
-        <h1 className="hero-title">
-          {words.map((word, wordIndex) => {
-            const chars = word.split("");
-            return (
-              <span key={wordIndex} className="split-word">
-                {chars.map((char, charIndex) => {
-                  const delay = charCount * 0.04;
-                  charCount++;
-                  return (
-                    <span 
-                      key={charIndex} 
-                      className="split-char" 
-                      style={{ animationDelay: `${delay}s` }}
-                    >
-                      {char}
-                    </span>
-                  );
-                })}
-                {wordIndex < words.length - 1 && "\u00A0"}
-              </span>
-            );
-          })}
-        </h1>
-        <p className="hero-subtitle">
-          Trải nghiệm tốc độ đỉnh cao, cưỡi lạc đà giữa sa mạc cát trắng và tận hưởng ẩm thực địa phương độc đáo.
-        </p>
+      <motion.div 
+        className="hero-content"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.span 
+          className="hero-tag"
+          variants={tagVariants}
+        >
+          THIÊN ĐƯỜNG SA MẠC MŨI NÉ
+        </motion.span>
         
-        <div className="hero-actions">
-          <button 
+        <motion.h1 
+          className="hero-title"
+          style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0.25em' }}
+        >
+          {words.map((word, wordIndex) => (
+            <span key={wordIndex} className="split-word" style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+              {word.split("").map((char, charIndex) => (
+                <motion.span 
+                  key={charIndex} 
+                  className="split-char" 
+                  variants={charVariants}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+          ))}
+        </motion.h1>
+        
+        <motion.p 
+          className="hero-subtitle"
+          variants={childVariants}
+        >
+          Trải nghiệm tốc độ đỉnh cao, cưỡi lạc đà giữa sa mạc cát trắng và tận hưởng ẩm thực địa phương độc đáo.
+        </motion.p>
+        
+        <motion.div 
+          className="hero-actions"
+          variants={childVariants}
+        >
+          <motion.button 
             onClick={onBooking || (() => window.location.href = '#dich-vu')} 
             className="btn btn-primary"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
           >
             Khám phá dịch vụ
-          </button>
-          <a href="#thu-vien" className="btn btn-outline-light">
+          </motion.button>
+          <motion.a 
+            href="#thu-vien" 
+            className="btn btn-outline-light"
+            whileHover={{ scale: 1.05, y: -2, backgroundColor: 'rgba(255,255,255,0.1)' }}
+            whileTap={{ scale: 0.95 }}
+          >
             Xem thư viện ảnh
-          </a>
-        </div>
-      </div>
+          </motion.a>
+        </motion.div>
+      </motion.div>
       
-      <div className="scroll-down">
+      <motion.div 
+        className="scroll-down"
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 0.8, y: 15 }}
+        transition={{
+          y: {
+            duration: 1.2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+            ease: 'easeInOut'
+          },
+          opacity: { duration: 0.5, delay: 1.5 }
+        }}
+      >
         <span className="material-icons">keyboard_double_arrow_down</span>
-      </div>
+      </motion.div>
     </section>
   );
 }

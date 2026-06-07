@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './RestaurantMenu.scss';
 
 export default function RestaurantMenu() {
@@ -20,7 +21,7 @@ export default function RestaurantMenu() {
     'menu-giai-khat': [
       { name: 'Nước dừa tươi xiêm quả', price: '30.000đ', desc: 'Dừa xiêm ngọt thanh mát lạnh, thức uống lý tưởng sau những giờ đùa giỡn đồi cát nắng ấm.' },
       { name: 'Sinh tố thanh long đỏ', price: '40.000đ', desc: 'Được xay nhuyễn từ loại trái cây đặc sản nổi tiếng nhất Bình Thuận, giàu vitamin.' },
-      { name: 'Nước ép chanh dây mát lạnh', price: '35.000đ', desc: 'Hương thơm nồng nàn chua chua ngọt ngọt đánh tan cơn khát tức thì.' },
+      { name: 'Nước ép chanh dây mát lạnh', price: '35.000đ', desc: 'Hương thơm nồng nàn chua chua ngọt ngọt đánh tan cơn khát tức thời.' },
       { name: 'Cà phê sữa đá Sài Gòn', price: '25.000đ', desc: 'Cà phê phin đậm đặc pha sữa đặc thơm béo ngậy kèm đá bào sảng khoái ngày hè.' }
     ]
   };
@@ -31,14 +32,44 @@ export default function RestaurantMenu() {
     { id: 'menu-giai-khat', label: 'Nước Giải Khát' }
   ];
 
+  // Framer Motion variants
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 70, damping: 15 } 
+    }
+  };
+
+  const paneVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.35, ease: 'easeOut' }
+    },
+    exit: { 
+      opacity: 0, 
+      y: -15,
+      transition: { duration: 0.2, ease: 'easeIn' }
+    }
+  };
+
   return (
     <section className="restaurant-section" id="nha-hang">
       <div className="container">
-        <div className="section-header text-center">
+        <motion.div 
+          className="section-header text-center"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <span className="section-tag shiny-text">LOCAL TASTES & FLAVORS</span>
           <h2 className="section-title">Thực Đơn Nhà Hàng</h2>
           <div className="section-divider"></div>
-        </div>
+        </motion.div>
 
         <div className="menu-tabs-wrapper">
           <ul className="menu-tabs">
@@ -49,31 +80,46 @@ export default function RestaurantMenu() {
                 onClick={() => setActiveTab(tab.id)}
               >
                 {tab.label}
+                {activeTab === tab.id && (
+                  <motion.div 
+                    className="active-tab-underline" 
+                    layoutId="activeTabUnderline"
+                  />
+                )}
               </li>
             ))}
           </ul>
         </div>
 
         <div className="menu-content-container">
-          {tabs.map(tab => (
-            <div 
-              key={tab.id}
-              className={`menu-pane ${activeTab === tab.id ? 'active' : ''}`}
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={activeTab}
+              className="menu-pane-active"
+              variants={paneVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
             >
               <div className="menu-grid">
-                {menuData[tab.id].map((item, idx) => (
-                  <div key={idx} className="menu-item">
+                {menuData[activeTab].map((item, idx) => (
+                  <motion.div 
+                    key={idx} 
+                    className="menu-item"
+                    whileHover={{ x: 6 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                  >
                     <div className="menu-item-details">
                       <h4 className="menu-item-title">
                         {item.name} <span>{item.price}</span>
                       </h4>
                       <p className="menu-item-desc">{item.desc}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

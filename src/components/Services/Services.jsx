@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import './Services.scss';
 
 export default function Services() {
@@ -40,18 +41,68 @@ export default function Services() {
     }
   ];
 
+  // Framer Motion variants
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 70, damping: 15 } 
+    }
+  };
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12,
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 60, damping: 15 } 
+    }
+  };
+
   return (
     <section className="services-section" id="dich-vu">
       <div className="container">
-        <div className="section-header text-center">
+        <motion.div 
+          className="section-header text-center"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <span className="section-tag shiny-text">ADVENTURE & EXPERIENCES</span>
           <h2 className="section-title">Dịch Vụ & Trải Nghiệm</h2>
           <div className="section-divider"></div>
-        </div>
+        </motion.div>
 
-        <div className="services-grid">
+        <motion.div 
+          className="services-grid"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+        >
           {experiences.map(exp => (
-            <div key={exp.id} className="service-card">
+            <motion.div 
+              key={exp.id} 
+              className="service-card"
+              variants={cardVariants}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                boxShadow: "0px 20px 45px rgba(0, 0, 0, 0.08)"
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
               <div className="card-img-wrapper">
                 <img 
                   src={exp.image} 
@@ -69,9 +120,9 @@ export default function Services() {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

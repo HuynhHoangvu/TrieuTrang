@@ -17,14 +17,8 @@
   border-radius: 4px;
   overflow: hidden;
   box-shadow: $shadow-premium;
-  transition: transform $transition-slow, box-shadow $transition-normal;
   display: flex;
   flex-direction: column;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
-  }
 }
 
 .card-img-wrapper {

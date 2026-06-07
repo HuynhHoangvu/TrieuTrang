@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Testimonials.scss';
 
 export default function Testimonials() {
@@ -44,44 +45,70 @@ export default function Testimonials() {
     return () => clearInterval(sliderInterval);
   }, [reviews.length]);
 
+  // Framer Motion variants
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: 'spring', stiffness: 70, damping: 15 } 
+    }
+  };
+
+  const slideVariants = {
+    enter: { opacity: 0, x: 40 },
+    center: { opacity: 1, x: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+    exit: { opacity: 0, x: -40, transition: { duration: 0.3, ease: 'easeIn' } }
+  };
+
   return (
     <section className="testimonials-section" id="danh-gia">
       <div className="container">
-        <div className="section-header text-center">
+        <motion.div 
+          className="section-header text-center"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <span className="section-tag shiny-text">CUSTOMER REVIEWS</span>
           <h2 className="section-title">Khách Hàng Nói Về Chúng Tôi</h2>
           <div className="section-divider"></div>
-        </div>
+        </motion.div>
 
         <div className="testimonials-slider-wrapper">
           <div className="testimonials-slider">
-            {reviews.map((rev, idx) => (
-              <div 
-                key={rev.id} 
-                className={`testimonial-slide ${idx === activeIndex ? 'active' : ''}`}
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={activeIndex} 
+                className="testimonial-slide active"
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
               >
                 <div className="testimonial-card">
                   <div className="rating-stars">
-                    {Array.from({ length: rev.rating }).map((_, i) => (
+                    {Array.from({ length: reviews[activeIndex].rating }).map((_, i) => (
                       <span key={i} className="material-icons">star</span>
                     ))}
                   </div>
-                  <p className="testimonial-text">"{rev.text}"</p>
+                  <p className="testimonial-text">"{reviews[activeIndex].text}"</p>
                   <div className="testimonial-user">
                     <img 
                       className="user-avatar" 
-                      src={rev.avatarFallback} 
-                      alt={rev.name} 
+                      src={reviews[activeIndex].avatarFallback} 
+                      alt={reviews[activeIndex].name} 
                     />
                     <div className="user-info">
-                      <h4 className="user-name">{rev.name}</h4>
-                      <span className="user-role">{rev.role}</span>
+                      <h4 className="user-name">{reviews[activeIndex].name}</h4>
+                      <span className="user-role">{reviews[activeIndex].role}</span>
                     </div>
                   </div>
-                  <div className="testimonial-date">{rev.date}</div>
+                  <div className="testimonial-date">{reviews[activeIndex].date}</div>
                 </div>
-              </div>
-            ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           <div className="slider-dots">

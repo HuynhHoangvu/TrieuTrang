@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import './FloatingContact.scss';
 
 const ZaloIcon = () => (
@@ -12,28 +13,49 @@ export default function FloatingContact() {
   return (
     <div className="floating-contacts">
       {/* Floating Zalo */}
-      <a 
+      <motion.a 
         href="https://zalo.me/0901234567" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="floating-btn btn-zalo"
         aria-label="Liên hệ Zalo"
+        animate={{ y: [0, -8, 0] }}
+        transition={{
+          y: {
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        }}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
       >
         <span className="pulse-ring"></span>
         <ZaloIcon />
         <span className="tooltip-text">Chat Zalo</span>
-      </a>
+      </motion.a>
 
       {/* Floating Phone */}
-      <a 
+      <motion.a 
         href="tel:0901234567" 
         className="floating-btn btn-phone"
         aria-label="Gọi hotline"
+        animate={{ y: [0, -8, 0] }}
+        transition={{
+          y: {
+            duration: 2.5,
+            delay: 0.5, // out of sync from Zalo
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        }}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.95 }}
       >
         <span className="pulse-ring"></span>
         <span className="material-icons">phone</span>
         <span className="tooltip-text">Gọi ngay</span>
-      </a>
+      </motion.a>
     </div>
   );
 }
